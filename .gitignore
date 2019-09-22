@@ -36,3 +36,6 @@
 
 #Program executable
 tp
+
+#zip
+*.zip
