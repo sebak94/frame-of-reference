@@ -1,18 +1,36 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "compressor.h"
+#include <iostream>
 
 #define SUCCESS 0
 #define ERROR 1
-#define NUMBER_BYTES 3
+#define PARAMETERS 5
+#define MAX_FILENAME_LENGTH 30
+
+void handle_command(char const *argv[]);
 
 int main(int argc, char const *argv[]) {
-    try {
-        Compressor comp("zeroblk", "zeroblk3-s.out", NUMBER_BYTES);
-        comp.start();
-    } catch (const char* error_msg) {
-        printf("%s\n", error_msg);
+    if (argc < PARAMETERS + 1 || argc > PARAMETERS + 1) {
+        std::cout << "Formato: ./tp <N> <T> <Q> <infile> <outfile>" << "\n";
     }
 
+    handle_command(argv);
+
     return SUCCESS;
+}
+
+void handle_command(char const *argv[]) {
+    int n = std::stoi(argv[1], nullptr);
+    // int t = std::stoi(argv[2], nullptr);
+    // int q = std::stoi(argv[3], nullptr);
+    std::string infile = std::string(argv[4]);
+    std::string outfile = std::string(argv[5]);
+
+    try {
+        Compressor comp(infile, outfile, n);
+        comp.start();
+    } catch (const char* error_msg) {
+        std::cout << error_msg << "\n";
+    }
 }

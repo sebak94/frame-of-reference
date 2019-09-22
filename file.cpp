@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <vector>
 
-File::File(const char *filename, std::ios_base::openmode mode) {
+File::File(const std::string filename, std::ios_base::openmode mode) {
     fs.open(filename, mode);
     if (fs.fail()) throw "fopen failed";
 }

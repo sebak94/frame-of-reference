@@ -10,7 +10,7 @@ class File {
     std::fstream fs;
 
     public:
-    File(const char *filename, std::ios_base::openmode mode);
+    File(const std::string filename, std::ios_base::openmode mode);
     void read(char *block, size_t size);
     void write(const char *block, size_t size);
     int glength();

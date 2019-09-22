@@ -19,7 +19,8 @@ class Compressor {
         size_t bytes_to_read);
 
     public:
-    Compressor(const char *read_file_path, const char *write_file_path,
+    Compressor(const std::string infilename,
+        const std::string outfilename,
         size_t block_size);
     void start();
     ~Compressor();
