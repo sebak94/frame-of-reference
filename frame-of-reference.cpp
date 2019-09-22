@@ -1,37 +1,32 @@
+#include "frame-of-reference.h"
+#include "for-compressor.h"
 #include <stdio.h>
-#include <stdint.h>
-#include <iostream>
 #include <string>
-#include "compressor.h"
 
-#define SUCCESS 0
-#define ERROR 1
-#define PARAMETERS 5
-#define MAX_FILENAME_LENGTH 30
+FrameOfReference::FrameOfReference(const std::string infilename,
+    const std::string outfilename,
+    size_t block_size,
+    size_t threads,
+    size_t max_in_queue):
+    fr(infilename, std::ios_base::in | std::ios_base::binary),
+    fw(outfilename, std::ios_base::out | std::ios_base::binary),
+    block_size(block_size),
+    threads_count(threads),
+    max_in_queue(max_in_queue) {}
 
-void handle_command(char const *argv[]);
+void FrameOfReference::start() {
+    std::vector<Thread*> threads;
 
-int main(int argc, char const *argv[]) {
-    if (argc < PARAMETERS + 1 || argc > PARAMETERS + 1) {
-        std::cout << "Formato: ./tp <N> <T> <Q> <infile> <outfile>" << "\n";
+    for (size_t i = 0; i < threads_count; i++) {
+        Thread *t = new FORCompressor(&fr, &fw, block_size, max_in_queue);
+        t->start();
+        threads.push_back(t);
     }
 
-    handle_command(argv);
-
-    return SUCCESS;
-}
-
-void handle_command(char const *argv[]) {
-    int n = std::stoi(argv[1], nullptr);
-    // int t = std::stoi(argv[2], nullptr);
-    // int q = std::stoi(argv[3], nullptr);
-    std::string infile = std::string(argv[4]);
-    std::string outfile = std::string(argv[5]);
-
-    try {
-        Compressor comp(infile, outfile, n);
-        comp.start();
-    } catch(const char* error_msg) {
-        std::cout << error_msg << "\n";
+    for (size_t i = 0; i < threads_count; i++) {
+        threads[i]->join();
+        delete threads[i];
     }
 }
+
+FrameOfReference::~FrameOfReference() {}
