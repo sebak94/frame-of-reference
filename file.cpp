@@ -1,6 +1,7 @@
 #include "file.h"
 #include <stdint.h>
 #include <vector>
+#include <string>
 
 File::File(const std::string filename, std::ios_base::openmode mode) {
     fs.open(filename, mode);
@@ -16,9 +17,9 @@ void File::write(const char *block, size_t size) {
 }
 
 int File::glength() {
-    fs.seekg (0, fs.end);
+    fs.seekg(0, fs.end);
     int length = fs.tellg();
-    fs.seekg (0, fs.beg);
+    fs.seekg(0, fs.beg);
     return length;
 }
 

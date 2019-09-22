@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdint.h>
-#include "compressor.h"
 #include <iostream>
+#include <string>
+#include "compressor.h"
 
 #define SUCCESS 0
 #define ERROR 1
@@ -30,7 +31,7 @@ void handle_command(char const *argv[]) {
     try {
         Compressor comp(infile, outfile, n);
         comp.start();
-    } catch (const char* error_msg) {
+    } catch(const char* error_msg) {
         std::cout << error_msg << "\n";
     }
 }

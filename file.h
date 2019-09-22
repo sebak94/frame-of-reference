@@ -4,6 +4,7 @@
 #include <fstream>
 #include <stdint.h>
 #include <vector>
+#include <string>
 
 class File {
     protected:

@@ -3,6 +3,7 @@
 
 #include "file.h"
 #include "vector"
+#include <string>
 
 class Compressor {
     private:

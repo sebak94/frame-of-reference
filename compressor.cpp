@@ -4,13 +4,15 @@
 #include <arpa/inet.h>
 #include <algorithm>
 #include <bitset>
+#include <string>
+#include <vector>
 
 #define BYTE 8
 
 Compressor::Compressor(const std::string infilename,
     const std::string outfilename, size_t block_size):
     fr(infilename, std::ios_base::in | std::ios_base::binary),
-    fw(outfilename, std::ios_base::out | std::ios_base::binary ),
+    fw(outfilename, std::ios_base::out | std::ios_base::binary),
     block_size(block_size) {}
 
 std::vector<bool> Compressor::create_and_fill_bits_vector(
