@@ -1,7 +1,7 @@
 #include "thread.h"
 #include <thread>
 
-Thread::Thread() {}
+Thread::Thread(size_t tnumber): tnumber(tnumber) {}
 
 void Thread::start() {
     thread = std::thread(&Thread::run, this);
@@ -13,7 +13,7 @@ void Thread::join() {
 
 Thread::~Thread() {}
 
-Thread::Thread(Thread&& other) {
+Thread::Thread(Thread&& other): tnumber(other.tnumber) {
     thread = std::move(other.thread);
 }
 

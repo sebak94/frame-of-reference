@@ -1,7 +1,9 @@
 #include "frame-of-reference.h"
-#include "for-compressor.h"
+#include "for-compressor.h" 
 #include <stdio.h>
 #include <string>
+
+#define BYTES_NUMBER 4
 
 FrameOfReference::FrameOfReference(const std::string infilename,
     const std::string outfilename,
@@ -18,7 +20,8 @@ void FrameOfReference::start() {
     std::vector<Thread*> threads;
 
     for (size_t i = 0; i < threads_count; i++) {
-        Thread *t = new FORCompressor(&fr, &fw, block_size, max_in_queue);
+        Thread *t = new FORCompressor(&fr, &fw, block_size, max_in_queue, i,
+            threads_count);
         t->start();
         threads.push_back(t);
     }

@@ -9,10 +9,12 @@
 #include <vector>
 
 #define BYTE 8
+#define BYTES_NUMBER 4
 
 FORCompressor::FORCompressor(File *fr, File *fw, size_t block_size,
-    size_t max_in_queue): fr(fr), fw(fw), block_size(block_size),
-    max_in_queue(max_in_queue) {}
+    size_t max_in_queue, size_t tnumber, size_t threads): Thread(tnumber),
+    fr(fr), fw(fw), block_size(block_size), max_in_queue(max_in_queue),
+    threads(threads) {}
 
 std::vector<bool> FORCompressor::create_and_fill_bits_vector(
     uint32_t *differences, uint8_t bits) {
@@ -35,7 +37,6 @@ std::vector<bool> FORCompressor::create_and_fill_bits_vector(
 void FORCompressor::write_compressed_data(uint32_t reference, uint8_t bits,
     std::vector<bool> differences) {
     std::bitset<BYTE> byte;
-
     uint32_t _reference = htonl(reference);
 
     fw->write((char*) &_reference, sizeof(_reference));
@@ -65,7 +66,6 @@ void FORCompressor::compress_block(uint32_t *block) {
     }
 
     uint8_t bits = number_of_bits(max_dif);
-
     std::vector<bool> differences = create_and_fill_bits_vector(difs, bits);
 
     write_compressed_data(min, bits, differences);
@@ -79,36 +79,26 @@ void FORCompressor::to_host_endian(uint32_t *block) {
     }
 }
 
-void FORCompressor::read_until_eof(uint32_t *block, int *counter, int length,
-    size_t bytes_to_read) {
+void FORCompressor::run() {
+    uint32_t *block = new uint32_t[block_size];
+    int data_size = BYTES_NUMBER * block_size;
+    size_t next_pos = tnumber * BYTES_NUMBER * block_size;
+    size_t file_size = fr->glength();
+    
     while (true) {
-        if (*counter == length) break;
-        fr->read((char*)block, bytes_to_read);
-        *counter += fr->gcount();
-        int dif = bytes_to_read - fr->gcount();
+        if (next_pos >= file_size) break;
+        int count = fr->seekg_read_and_gcount((char*)block, data_size, next_pos);
+        int dif = data_size - count;
         if (dif > 0) {
-            for (size_t i = block_size - dif / sizeof(uint32_t);
+            for (size_t i = block_size - dif / BYTES_NUMBER;
                 i < block_size; i++) {
                 block[i] = block[i - 1];
-                *counter += sizeof(uint32_t);
             }
         }
         to_host_endian(block);
         compress_block(block);
+        next_pos = next_pos + data_size * threads;
     }
-}
-
-void FORCompressor::run() {
-    uint32_t *block = new uint32_t[block_size];
-
-    int counter = 0;
-    int length = fr->glength();
-    size_t bytes_to_read = sizeof(uint32_t) * block_size;
-    if (length % bytes_to_read != 0) {
-        length += 2 * bytes_to_read - length;
-    }
-
-    read_until_eof(block, &counter, length, bytes_to_read);
 
     delete[] block;
 }
