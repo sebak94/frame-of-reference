@@ -6,11 +6,16 @@
 #include "block.h"
 #include "blocking_queue.h"
 #include "vector"
+#include <bitset>
+
+#define BYTE 8
 
 class DataWriter {
     private:
     File *fw;
     std::vector<BlockingQueue*> queues;
+
+    void write_byte(std::bitset<BYTE> &byte);
 
     public:
     explicit DataWriter(File *rw);

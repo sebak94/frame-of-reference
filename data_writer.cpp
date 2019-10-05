@@ -5,8 +5,6 @@
 #include <bitset>
 #include <arpa/inet.h>
 
-#define BYTE 8
-
 DataWriter::DataWriter(File *fw): fw(fw) {}
 
 void DataWriter::start() {
@@ -36,12 +34,23 @@ void DataWriter::write(Block &b) {
         byte.set((BYTE - 1) - j, b.differences.at(i));
         if ((j + 1) % BYTE == 0) {
             j = 0;
-            uint64_t sbyte = byte.to_ulong();
-            fw->write((char*) &sbyte, 1);
+            write_byte(byte);
         } else {
             j++;
         }
     }
+
+    if (j != 0) {
+        for (size_t i = j; i < BYTE; i++) {
+            byte.set((BYTE - 1) - i, 0);
+        }
+        write_byte(byte);
+    }
+}
+
+void DataWriter::write_byte(std::bitset<BYTE> &byte) {
+    uint64_t sbyte = byte.to_ulong();
+    fw->write((char*) &sbyte, 1);
 }
 
 void DataWriter::add_queue(BlockingQueue *queue) {

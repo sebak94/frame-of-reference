@@ -15,7 +15,7 @@ class BlockingQueue {
     const size_t queue_limit;
 
     public:
-    BlockingQueue(size_t queue_limit);
+    explicit BlockingQueue(size_t queue_limit);
     void push(Block b);
     Block pop();
     bool empty();
