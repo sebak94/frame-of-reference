@@ -1,5 +1,5 @@
 #ifndef __THREAD_H__
-#define __THREAD_H_
+#define __THREAD_H__
 
 #include <stdio.h>
 #include <thread>
@@ -12,7 +12,7 @@ class Thread {
     const size_t tnumber;
  
     public:
-    Thread(size_t tnumber);
+    explicit Thread(size_t tnumber);
     void start();
     void join();
     virtual void run() = 0; 

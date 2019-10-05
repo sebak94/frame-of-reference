@@ -2,23 +2,23 @@
 #define __FRAME_OF_REFERENCE_H__
 
 #include "file.h"
+#include "block.h"
+#include "compress_data.h"
+#include "blocking_queue.h"
 #include <stdio.h>
 #include <string>
+#include "vector"
 
 class FrameOfReference {
     private:
     File fr;
     File fw;
-    const size_t block_size;
-    const size_t threads_count;
-    const size_t max_in_queue;
+    CompressData cd;
+    std::vector<BlockingQueue*> queues;
 
     public:
     FrameOfReference(const std::string infilename,
-        const std::string outfilename,
-        size_t block_size,
-        size_t threads,
-        size_t max_in_queue);
+        const std::string outfilename, CompressData cd);
     void start();
     ~FrameOfReference();
 };

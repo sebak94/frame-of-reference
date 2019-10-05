@@ -13,7 +13,7 @@ class Lock {
         Lock& operator=(Lock&&) = delete;
 
     public:
-        Lock(std::mutex &m);
+        explicit Lock(std::mutex &m);
         ~Lock();
 };
 
