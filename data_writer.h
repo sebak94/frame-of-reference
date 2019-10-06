@@ -2,7 +2,7 @@
 #define __DATA_WRITER_H__
 
 #include "thread.h"
-#include "file.h"
+#include "file_writer.h"
 #include "block.h"
 #include "blocking_queue.h"
 #include "vector"
@@ -12,13 +12,13 @@
 
 class DataWriter {
     private:
-    File *fw;
+    FileWriter *fw;
     std::vector<BlockingQueue*> queues;
 
     void write_byte(std::bitset<BYTE> &byte);
 
     public:
-    explicit DataWriter(File *rw);
+    explicit DataWriter(FileWriter *rw);
     void start();
     void write(Block &b);
     void add_queue(BlockingQueue *queue);

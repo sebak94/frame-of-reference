@@ -1,7 +1,7 @@
 #ifndef __FOR_COMPRESSOR_H__
 #define __FOR_COMPRESSOR_H__
 
-#include "file.h"
+#include "file_reader.h"
 #include "thread.h"
 #include "block.h"
 #include "compress_data.h"
@@ -12,7 +12,7 @@
 
 class FORCompressor: public Thread {
     private:
-    File *fr;
+    FileReader *fr;
     CompressData cd;
     BlockingQueue *blocks_queue;
 
@@ -22,7 +22,7 @@ class FORCompressor: public Thread {
         uint8_t bits);
 
     public:
-    FORCompressor(File *fr, BlockingQueue *queue, CompressData &cd,
+    FORCompressor(FileReader *fr, BlockingQueue *queue, CompressData &cd,
         size_t tnumber);
     virtual void run() override;
     ~FORCompressor();

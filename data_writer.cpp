@@ -1,11 +1,11 @@
 #include "data_writer.h"
-#include "file.h"
+#include "file_writer.h"
 #include "block.h"
 #include "blocking_queue.h"
 #include <bitset>
 #include <arpa/inet.h>
 
-DataWriter::DataWriter(File *fw): fw(fw) {}
+DataWriter::DataWriter(FileWriter *fw): fw(fw) {}
 
 void DataWriter::start() {
     bool writing = true;

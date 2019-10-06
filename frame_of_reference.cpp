@@ -12,8 +12,7 @@
 
 FrameOfReference::FrameOfReference(const std::string infilename,
     const std::string outfilename, CompressData cd):
-    fr(infilename, std::ios_base::in | std::ios_base::binary),
-    fw(outfilename, std::ios_base::out | std::ios_base::binary), cd(cd) {
+    fr(infilename), fw(outfilename), cd(cd) {
     for (size_t i = 0; i < cd.threads; i++) {
         queues.push_back(new BlockingQueue(cd.queue_limit));
     }

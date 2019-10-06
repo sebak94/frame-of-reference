@@ -1,5 +1,5 @@
 #include "for_compressor.h"
-#include "file.h"
+#include "file_reader.h"
 #include "utils.h"
 #include "compress_data.h"
 #include "blocking_queue.h"
@@ -13,7 +13,7 @@
 
 #define BYTES_NUMBER 4
 
-FORCompressor::FORCompressor(File *fr, BlockingQueue *queue,
+FORCompressor::FORCompressor(FileReader *fr, BlockingQueue *queue,
     CompressData &cd, size_t tnumber): Thread(tnumber), fr(fr), cd(cd) {
     blocks_queue = queue;
 }
