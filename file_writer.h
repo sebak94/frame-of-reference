@@ -5,12 +5,10 @@
 #include <stdint.h>
 #include <vector>
 #include <string>
-#include <mutex>
 
 class FileWriter {
     private:
     std::fstream fs;
-    std::mutex m;
 
     public:
     explicit FileWriter(const std::string filename);

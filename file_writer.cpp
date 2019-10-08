@@ -15,12 +15,10 @@ FileWriter::FileWriter(const std::string filename) {
 }
 
 void FileWriter::write(const char *block, size_t size) {
-    Lock l(m);
     fs.write(block, size);
 }
 
 int FileWriter::error() {
-    Lock l(m);
     return fs.fail() || fs.bad();
 }
 
