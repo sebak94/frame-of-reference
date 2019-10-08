@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <thread>
 
+// Crea un thread al construirse y lo lanza con el método run
 class Thread {
     private:
     std::thread thread;

@@ -10,6 +10,7 @@
 #include "vector"
 #include "queue"
 
+// Corre en un hilo distinto. Esta clase tiene el algoritmo de compresión.
 class FORCompressor: public Thread {
     private:
     FileReader *fr;
@@ -24,6 +25,9 @@ class FORCompressor: public Thread {
     public:
     FORCompressor(FileReader *fr, BlockingQueue *queue, CompressData &cd,
         size_t tnumber);
+    // Se encarga de llamar al read de FileReader y de llamar a los métodos
+    // que comprimen el bloque. Lee la porción del archivo que le corresponde
+    // de acuerdo al número de hilo que es.
     virtual void run() override;
     ~FORCompressor();
 };

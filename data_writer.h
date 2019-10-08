@@ -10,6 +10,8 @@
 
 #define BYTE 8
 
+// Clase que desencola bloques de las colas y las guarda en disco
+// de forma ordenada
 class DataWriter {
     private:
     FileWriter *fw;
@@ -19,8 +21,11 @@ class DataWriter {
 
     public:
     explicit DataWriter(FileWriter *rw);
+    // Loop principal. Desencola y llama a write hasta que el bloque sea nulo
     void start();
+    // Escribe en el archivo los datos del bloque comprimido
     void write(Block &b);
+    // Agrega una cola bloqueante al vector
     void add_queue(BlockingQueue *queue);
     ~DataWriter();
 };

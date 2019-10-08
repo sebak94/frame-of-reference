@@ -3,6 +3,7 @@
 
 #include <mutex>
 
+// Wrapper de mutex. Lockea en el constructor. Unlockea en el destructor.
 class Lock {
     private:
         std::mutex &m;

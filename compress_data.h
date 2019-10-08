@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 
+// Struct que guarda los datos obtenidos de los parámetros de entrada
 struct CompressData {
     size_t block_size;
     size_t threads;

@@ -10,6 +10,7 @@
 #include <string>
 #include "vector"
 
+// Guarda las referencias a los fstream y crea las colas bloqueantes
 class FrameOfReference {
     private:
     FileReader fr;
@@ -20,6 +21,7 @@ class FrameOfReference {
     public:
     FrameOfReference(const std::string infilename,
         const std::string outfilename, CompressData cd);
+    // Crea y lanza los hilos de lectura y compresión, y el data writer
     void start();
     ~FrameOfReference();
 };
